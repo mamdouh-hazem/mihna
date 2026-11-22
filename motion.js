@@ -115,6 +115,24 @@
     });
   }
 
+  /* ---- Staggered reveal for exam/lesson list items ---- */
+  var items = document.querySelectorAll('.test-item');
+  if (items.length && 'IntersectionObserver' in window && !reduced) {
+    var iio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        var el = en.target;
+        var sibs = Array.prototype.filter.call(el.parentElement.children, function (c) { return c.classList.contains('test-item'); });
+        var idx = Math.max(0, sibs.indexOf(el));
+        el.style.transitionDelay = (idx * 70) + 'ms';
+        el.classList.add('rv-in');
+        setTimeout(function () { el.style.transitionDelay = ''; }, idx * 70 + 800);
+        iio.unobserve(el);
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -6% 0px' });
+    items.forEach(function (el) { el.classList.add('rv'); iio.observe(el); });
+  }
+
   /* ---- Sample question widget ---- */
   var tryOpts = document.getElementById('try-opts');
   if (tryOpts) {
