@@ -132,9 +132,14 @@ a { color: var(--navy2); }
 .test-item .t-desc { color: var(--muted); font-size: 13.5px; }
 .test-item.soon { opacity: .65; background: #faf8f2; }
 .test-item .go { color: var(--gold2); font-weight: 800; font-size: 13px; }
-.site-footer { text-align: center; color: var(--muted); font-size: 12.5px; margin-top: 22px; }
+.site-footer { text-align: center; color: var(--muted); font-size: 12.5px; margin-top: 22px; line-height: 2; }
+.channel-row { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+.channel-row .btn { display: block; }
+.follow-row { margin-top: 14px; text-align: center; font-size: 14px; line-height: 2; }
+.price-line { color: var(--navy); font-size: 15.5px; margin-top: 12px; }
+.price-line b { color: var(--gold2); font-size: 18px; }
 @media (max-width: 520px) {
   .mode-row { grid-template-columns: 1fr; }
   .hero h2 { font-size: 18px; }
   body { font-size: 15.5px; }
-             }
+}
