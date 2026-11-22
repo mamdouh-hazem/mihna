@@ -1,0 +1,137 @@
+/* Mihna lesson engine — data-driven from <lesson-id>.json */
+(function () {
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function el(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
+
+  var params = new URLSearchParams(location.search);
+  var lessonId = params.get('lesson') || 'draft-01-inzar';
+  var T = null;
+
+  fetch(encodeURIComponent(lessonId) + '.json')
+    .then(function (r) { if (!r.ok) throw new Error('not found'); return r.json(); })
+    .then(function (d) { T = d; render(); })
+    .catch(function () {
+      document.getElementById('app').innerHTML = '<div class="card"><h2>الدرس غير موجود</h2><p>تأكد من الرابط أو ارجع إلى <a href="index.html">الصفحة الرئيسية</a>.</p></div>';
+    });
+
+  function renderBlocks(blocks, host) {
+    (blocks || []).forEach(function (b) {
+      if (b.p) host.appendChild(el('p', 'lesson-p', esc(b.p)));
+      else if (b.list) {
+        var ul = el('ul', 'lesson-list');
+        b.list.forEach(function (li) { ul.appendChild(el('li', null, esc(li))); });
+        host.appendChild(ul);
+      } else if (b.tip) host.appendChild(el('div', 'fb-card fb-ok', '<div class="fb-head">💡 قاعدة عملية</div>' + esc(b.tip)));
+      else if (b.warn) host.appendChild(el('div', 'fb-card fb-warn', '<div class="fb-head">⚠️ خطأ شائع</div>' + esc(b.warn)));
+      else if (b.ex) host.appendChild(el('div', 'fb-card fb-bad', '<div class="fb-head">' + esc(b.ex_title || 'مثال') + '</div>' + esc(b.ex)));
+    });
+  }
+
+  function render() {
+    document.title = T.title + ' | تدريب مهنة على الصياغة';
+    var app = document.getElementById('app');
+    app.innerHTML = '';
+
+    var head = el('header', 'brand');
+    head.innerHTML = '<a class="brand-home" href="index.html">مهنة</a><div class="brand-slogan">من المعرفة القانونية إلى الحياة المهنية</div>';
+    app.appendChild(head);
+
+    var hero = el('section', 'hero card');
+    hero.innerHTML =
+      '<div class="chip">' + esc(T.track || 'التدريب على الصياغة') + '</div>' +
+      '<h1>الدرس رقم (' + esc(T.number) + ')</h1>' +
+      '<h2>' + esc(T.title) + '</h2>' +
+      '<p class="sub">' + esc(T.subtitle) + '</p>';
+    app.appendChild(hero);
+
+    var isPaid = T.access === 'paid';
+
+    // Goals
+    var goals = el('section', 'card');
+    goals.innerHTML = '<h2 class="sec-title">🎯 ماذا ستتقن بعد هذا الدرس؟</h2>';
+    var gul = el('ul', 'lesson-list');
+    (T.goals || []).forEach(function (g) { gul.appendChild(el('li', null, esc(g))); });
+    goals.appendChild(gul);
+    app.appendChild(goals);
+
+    if (isPaid) {
+      var lock = el('section', 'card');
+      lock.innerHTML = '<h2 class="sec-title">🔒 محتوى الدرس كاملاً ضمن باقة التدريب</h2>' +
+        '<p class="hint">هذا الدرس جزء من برنامج التدريب على الصياغة المدفوع: شرح مبسط + نموذج معتمد + تمرين كتابة ترسله ويُقيَّم لك. الباقة كاملة بسعر تأسيسي <b>٣٠٠ جنيه</b> (الدفع عبر InstaPay أو فودافون كاش).</p>';
+      var row = el('div', 'channel-row');
+      var order = el('a', 'btn btn-gold', '💬 اطلب باقة التدريب عبر واتساب');
+      order.href = T.order_wa || 'https://wa.me/201092861985';
+      order.target = '_blank'; order.rel = 'noopener';
+      row.appendChild(order);
+      var back = el('a', 'btn btn-ghost', '← العودة إلى المنصة');
+      back.href = 'index.html';
+      row.appendChild(back);
+      lock.appendChild(row);
+      app.appendChild(lock);
+      addFooter(app);
+      return;
+    }
+
+    // Explanation sections
+    (T.sections || []).forEach(function (sec, i) {
+      var c = el('section', 'card');
+      c.innerHTML = '<h2 class="sec-title">' + esc(sec.h) + '</h2>';
+      renderBlocks(sec.blocks, c);
+      app.appendChild(c);
+    });
+
+    // Model document
+    if (T.model) {
+      var m = el('section', 'card');
+      m.innerHTML = '<h2 class="sec-title">📄 ' + esc(T.model.h || 'النموذج المعتمد') + '</h2>';
+      if (T.model.note) m.appendChild(el('p', 'hint', esc(T.model.note)));
+      var doc = el('div', 'model-doc');
+      (T.model.lines || []).forEach(function (ln) {
+        if (ln === '') { doc.appendChild(el('div', 'md-gap', '&nbsp;')); }
+        else if (/^##/.test(ln)) { doc.appendChild(el('div', 'md-h', esc(ln.replace(/^##\s*/, '')))); }
+        else { doc.appendChild(el('div', 'md-line', esc(ln))); }
+      });
+      m.appendChild(doc);
+      app.appendChild(m);
+    }
+
+    // Exercise
+    if (T.exercise) {
+      var x = el('section', 'card');
+      x.innerHTML = '<h2 class="sec-title">✍️ ' + esc(T.exercise.h || 'التمرين العملي') + '</h2>';
+      if (T.exercise.brief) x.appendChild(el('div', 'case-brief', esc(T.exercise.brief)));
+      var xul = el('ul', 'lesson-list');
+      (T.exercise.tasks || []).forEach(function (t) { xul.appendChild(el('li', null, esc(t))); });
+      x.appendChild(xul);
+      if (T.exercise.howto) x.appendChild(el('p', 'hint', esc(T.exercise.howto)));
+      var xrow = el('div', 'channel-row');
+      var send = el('a', 'btn btn-primary', '📩 أرسل تمرينك للتقييم عبر واتساب');
+      send.href = T.exercise.wa || 'https://wa.me/201092861985';
+      send.target = '_blank'; send.rel = 'noopener';
+      xrow.appendChild(send);
+      x.appendChild(xrow);
+      app.appendChild(x);
+    }
+
+    // Next lesson
+    if (T.next) {
+      var nx = el('section', 'card signoff');
+      nx.innerHTML = '<div style="font-weight:800;margin-bottom:6px;">أنهيت الدرس (' + esc(T.number) + ') 🎓</div>' +
+        '<div style="color:var(--muted);font-size:13.5px;">الدرس التالي: ' + esc(T.next.title) + '</div>';
+      var nrow = el('div', 'channel-row');
+      var nbtn = el('a', 'btn btn-gold', 'الدرس التالي ←');
+      nbtn.href = 'lesson.html?lesson=' + encodeURIComponent(T.next.id);
+      nrow.appendChild(nbtn);
+      nx.appendChild(nrow);
+      app.appendChild(nx);
+    }
+
+    addFooter(app);
+  }
+
+  function addFooter(app) {
+    var f = el('div', 'site-footer');
+    f.innerHTML = 'منصة مهنة · <a href="index.html">الرئيسية</a> · <a href="https://t.me/mehnah_eg" target="_blank" rel="noopener">تيليجرام</a> · <a href="https://wa.me/201092861985" target="_blank" rel="noopener">تواصل معنا</a>';
+    app.appendChild(f);
+  }
+})();
