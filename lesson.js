@@ -51,10 +51,18 @@
     // all paid lessons on this device (saved in localStorage).
     // Owner master code: unlocks every lesson on this device. Private to the site owner.
     var OWNER_CODE = 'MH-OWNER-84K2';
+    // Access codes: level-1 code, level-2 code, bundle code (both levels).
+    // MIHNA300 is the legacy level-1 code: existing buyers keep their access.
+    var CODES_L1 = ['MIHNA300', 'MIHNA-L1'];
+    var CODES_L2 = ['MIHNA-L2'];
+    var CODES_ALL = ['MIHNA-ALL'];
     function codeOk(c) {
       if (!c) return false;
       var u = String(c).trim().toUpperCase();
       if (u === OWNER_CODE) return true;
+      if (CODES_ALL.indexOf(u) !== -1) return true;
+      var pool = (T.level === 'المستوى الثاني') ? CODES_L2 : CODES_L1;
+      if (pool.indexOf(u) !== -1) return true;
       return (T.codes || []).some(function (x) { return String(x).toUpperCase() === u; });
     }
     var savedCode = null;
@@ -79,11 +87,11 @@
       var isL2 = T.level === 'المستوى الثاني';
       lock.innerHTML = '<h2 class="sec-title">🔒 محتوى الدرس كاملاً ضمن باقة التدريب</h2>' +
         (isL2
-          ? '<p class="hint">هذا الدرس جزء من <b>المستوى الثاني</b> من برنامج التدريب على الصياغة: شرح مبسط + نموذج معتمد + تمرين كتابة ترسله ويُقيَّم لك. الاشتراك في المستوى الثاني يُفتح قريباً — راسلنا واتساب ليصلك الإعلان فور الافتتاح.</p>'
-          : '<p class="hint">هذا الدرس جزء من برنامج التدريب على الصياغة المدفوع: شرح مبسط + نموذج معتمد + تمرين كتابة ترسله ويُقيَّم لك. الباقة كاملة بسعر تأسيسي <b>٣٠٠ جنيه</b> (الدفع عبر InstaPay أو فودافون كاش).</p>');
+          ? '<p class="hint">هذا الدرس جزء من <b>المستوى الثاني</b> من برنامج التدريب على الصياغة: شرح مبسط + نموذج معتمد + تمرين كتابة ترسله ويُقيَّم لك. بمناسبة انطلاق المنصة: باقة المستوى الثاني بـ<b>٦٠٠ جنيه</b> بدلاً من <s>١٥٠٠</s>، أو البرنامج الكامل (المستويان) بـ<b>٧٠٠ جنيه</b> بدلاً من <s>٢٧٠٠</s> (الدفع عبر InstaPay أو فودافون كاش).</p>'
+          : '<p class="hint">هذا الدرس جزء من <b>المستوى الأول</b> من برنامج التدريب على الصياغة: شرح مبسط + نموذج معتمد + تمرين كتابة ترسله ويُقيَّم لك. بمناسبة انطلاق المنصة: باقة المستوى الأول بـ<b>٤٠٠ جنيه</b> بدلاً من <s>١٢٠٠</s>، أو البرنامج الكامل (المستويان) بـ<b>٧٠٠ جنيه</b> بدلاً من <s>٢٧٠٠</s> (الدفع عبر InstaPay أو فودافون كاش).</p>');
       var row = el('div', 'channel-row');
-      var order = el('a', 'btn btn-gold', isL2 ? '💬 اسأل عن المستوى الثاني عبر واتساب' : '💬 اطلب باقة التدريب عبر واتساب');
-      order.href = T.order_wa || 'https://wa.me/201092861985';
+      var order = el('a', 'btn btn-gold', isL2 ? '💬 اطلب باقة المستوى الثاني عبر واتساب' : '💬 اطلب باقة المستوى الأول عبر واتساب');
+      order.href = T.order_wa || (isL2 ? 'https://wa.me/201092861985?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B4%D8%AA%D8%B1%D8%A7%D9%83%20%D9%81%D9%8A%20%D8%A8%D8%A7%D9%82%D8%A9%20%D8%A7%D9%84%D9%85%D8%B3%D8%AA%D9%88%D9%89%20%D8%A7%D9%84%D8%AB%D8%A7%D9%86%D9%8A%20%D9%85%D9%86%20%D8%A8%D8%B1%D9%86%D8%A7%D9%85%D8%AC%20%D8%A7%D9%84%D8%AA%D8%AF%D8%B1%D9%8A%D8%A8%20%D8%B9%D9%84%D9%89%20%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D8%BA%D8%A9%20%D8%A8%D9%85%D9%86%D8%B5%D8%A9%20%D9%85%D9%87%D9%86%D8%A9%20%D8%A8%D8%B3%D8%B9%D8%B1%20%D8%A7%D9%84%D8%A7%D9%86%D8%B7%D9%84%D8%A7%D9%82%20%D9%A6%D9%A0%D9%A0%20%D8%AC%D9%86%D9%8A%D9%87.' : 'https://wa.me/201092861985?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B4%D8%AA%D8%B1%D8%A7%D9%83%20%D9%81%D9%8A%20%D8%A8%D8%A7%D9%82%D8%A9%20%D8%A7%D9%84%D9%85%D8%B3%D8%AA%D9%88%D9%89%20%D8%A7%D9%84%D8%A3%D9%88%D9%84%20%D9%85%D9%86%20%D8%A8%D8%B1%D9%86%D8%A7%D9%85%D8%AC%20%D8%A7%D9%84%D8%AA%D8%AF%D8%B1%D9%8A%D8%A8%20%D8%B9%D9%84%D9%89%20%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D8%BA%D8%A9%20%D8%A8%D9%85%D9%86%D8%B5%D8%A9%20%D9%85%D9%87%D9%86%D8%A9%20%D8%A8%D8%B3%D8%B9%D8%B1%20%D8%A7%D9%84%D8%A7%D9%86%D8%B7%D9%84%D8%A7%D9%82%20%D9%A4%D9%A0%D9%A0%20%D8%AC%D9%86%D9%8A%D9%87.');
       order.target = '_blank'; order.rel = 'noopener';
       row.appendChild(order);
       var back = el('a', 'btn btn-ghost', '← العودة إلى المنصة');
@@ -99,7 +107,7 @@
       form.style.display = 'flex';
       form.style.gap = '8px';
       var inp = document.createElement('input');
-      inp.type = 'text'; inp.className = 'draft'; inp.placeholder = 'اكتب الكود هنا (مثال: MIHNA300)';
+      inp.type = 'text'; inp.className = 'draft'; inp.placeholder = 'اكتب الكود هنا (مثال: MIHNA-L1)';
       inp.style.marginBottom = '0'; inp.dir = 'ltr';
       var btn = el('button', 'btn btn-primary', 'تفعيل');
       btn.type = 'button'; btn.style.padding = '10px 18px';
