@@ -7,7 +7,7 @@
 <meta name="description" content="منصة مهنة: اختبارات قانونية عملية تفاعلية وتدريب على الصياغة لطلاب وحديثي التخرج — من المعرفة القانونية إلى الحياة المهنية.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@400;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230B1D38'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='%23D9B061' font-family='sans-serif' font-weight='bold'>م</text></svg>">
 </head>
@@ -18,10 +18,49 @@
     <div class="brand-slogan">من المعرفة القانونية إلى الحياة المهنية</div>
   </header>
 
-  <section class="hero card">
-    <div class="chip">المنصة التدريبية</div>
+  <section class="hero card" id="hero">
+    <div class="hero-bg" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    <div class="chip chip-shine">المنصة التدريبية</div>
     <h2>اختبارات عملية وتدريب على أعمال المحاماة</h2>
+    <div class="rot-line" aria-live="polite">مع مهنة هتقدر <span id="rot-word">تختبر نفسك بوقائع تخيلية</span><span class="rot-caret" aria-hidden="true"></span></div>
     <p class="sub">اقرأ الملخص، طبّق على وقائع تخيلية كأنك وكيل المتهم، استخرج الدفوع وصُغها بيدك، واحصل على تقييم فوري بالنموذج المعتمد وكشف أخطائك بالتفصيل.</p>
+    <div class="hero-cta">
+      <a class="btn btn-gold" href="#try">⚡ جرّب سؤالاً الآن</a>
+      <a class="btn btn-primary" href="#tests">⚖️ تصفح الاختبارات</a>
+    </div>
+  </section>
+
+  <section class="stats-band" id="stats" aria-label="أرقام المنصة">
+    <div class="stat"><b class="count" data-count="26">٠</b><span>درساً تدريبياً</span></div>
+    <div class="stat"><b class="count" data-count="4">٠</b><span>اختبارات عملية</span></div>
+    <div class="stat"><b class="count" data-count="40" data-suffix="+">٠</b><span>سؤالاً تطبيقياً</span></div>
+    <div class="stat"><b class="count" data-count="3">٠</b><span>شهادات معتمدة</span></div>
+  </section>
+
+  <section class="card" id="how">
+    <h2 class="sec-title">🚀 إزاي بتشتغل المنصة؟</h2>
+    <div class="steps">
+      <div class="step"><div class="step-n">١</div><b>اقرأ الملخص</b><p>شرح عملي مبسط يجهزك للتطبيق في دقائق</p></div>
+      <div class="step-arrow" aria-hidden="true">←</div>
+      <div class="step"><div class="step-n">٢</div><b>طبّق على وقائع</b><p>أسئلة وتمارين تخيلية كأنك وكيل المتهم</p></div>
+      <div class="step-arrow" aria-hidden="true">←</div>
+      <div class="step"><div class="step-n">٣</div><b>استلم تقييمك</b><p>تصحيح فوري بالنموذج المعتمد وشهادة عند الإتمام</p></div>
+    </div>
+  </section>
+
+  <section class="card" id="try">
+    <h2 class="sec-title">⚡ جرّب سؤالاً من اختباراتنا</h2>
+    <p class="hint">سؤال حقيقي من اختبار جريمة النصب (المستوى التمهيدي) — جاوب وشوف التقييم الفوري بنفسك:</p>
+    <div class="q-title">قال شخص لآخر: «سأضاعف مالك في أسبوع» دون أي عمل أو مظهر خارجي يؤيد قوله، فلم يسلّمه الآخر شيئاً. ما الحكم القانوني؟</div>
+    <div class="opts" id="try-opts">
+      <button type="button" class="opt try-opt" data-i="0">تقوم جريمة النصب التامة لأن القول تضمن وعداً كاذباً بربح.</button>
+      <button type="button" class="opt try-opt" data-i="1">لا تقوم جريمة النصب؛ فالتدليس المنشئ للجريمة يجب أن يكون بإحدى الطرق المنصوص عليها مؤيداً بمظاهر خارجية، كما لم يقع أي استيلاء على مال.</button>
+      <button type="button" class="opt try-opt" data-i="2">تقوم جريمة نصب ناقصة لأن النية الإجرامية وحدها كافية.</button>
+    </div>
+    <div class="inline-feedback" id="try-fb" hidden></div>
+    <div class="channel-row" id="try-more" hidden>
+      <a class="btn btn-gold" href="test.html?test=nasb-01">⚖️ أكمل الاختبار كاملاً: ١٠ أسئلة + ٣ وقائع تخيلية</a>
+    </div>
   </section>
 
   <section class="card" id="tests">
@@ -249,6 +288,15 @@
     </div>
   </section>
 
+  <section class="card" id="faq">
+    <h2 class="sec-title">❓ أسئلة شائعة</h2>
+    <details class="faq-item"><summary>هل الاختبارات العملية مجانية؟</summary><p>نعم، الاختبارات الأربعة مجانية بالكامل: ملخص سريع قبل البدء، أسئلة تطبيقية على وقائع تخيلية، وتقييم فوري من ٢٥ درجة مع بطاقة نتيجة تقدر تشاركها. وتقدمك محفوظ على جهازك لو حبيت تكمل لاحقاً.</p></details>
+    <details class="faq-item"><summary>إيه الفرق بين المستوى الأول والمستوى الثاني؟</summary><p>المستوى الأول (١٤ درساً) أساسيات الصياغة لحديثي التخرج: الإنذارات والإعلانات وصحيفة الدعوى ومذكرة الدفاع والعقود والتوكيلات. المستوى الثاني (١٢ درساً) ممارسة متقدمة: الجنايات والنقض ومجلس الدولة والشركات والتحكيم، وينتهي بمشروع تخرج بملف قضية متكامل.</p></details>
+    <details class="faq-item"><summary>إزاي أشترك وإيه طرق الدفع؟</summary><p>الاشتراك بيتم عبر واتساب من أزرار الطلب في كل باقة، والدفع يدوي عبر InstaPay أو فودافون كاش، وبيتم تفعيل اشتراكك مباشرة بعد التأكيد.</p></details>
+    <details class="faq-item"><summary>هل أحصل على شهادة بعد الإتمام؟</summary><p>نعم: عند إتمام كل مستوى تحصل على شهادة إتمام باسمك ورقم مسلسل، وبإتمام البرنامج كاملاً تحصل على شهادة خبرة بإتمام التدريب العملي موقعة من مكتب المحامي ممدوح حازم.</p></details>
+    <details class="faq-item"><summary>تمارين الكتابة بتتصحح إزاي؟</summary><p>آخر كل درس تمرين كتابة على واقعة تخيلية. تكتبه بإيدك أو نصاً وترسله واتساب من الزرار الموجود في الدرس، وبيتم تقييمه لك بالملاحظات التفصيلية على الصياغة والبيانات الواجبة.</p></details>
+  </section>
+
   <section class="card" id="founder">
     <h2 class="sec-title">⚖️ عن المحامي ممدوح حازم</h2>
     <p style="line-height:2;color:#3d4a5e">منصة مهنة مشروع أسسه <b>المحامي ممدوح حازم</b> لتعليم المحاماة العملية كما تمارس فعلاً: اختبارات وتمارين وتدريب صياغة بأسلوب المكاتب الكبرى. وبجانب المنصة، يمارس المحاماة والاستشارات القانونية في القضايا الجنائية والمدنية والأحوال الشخصية والعقارات وقضايا العمل والتجارية.<br>📞 للتواصل: <a href="tel:+201092861985" style="color:var(--navy);font-weight:700">01092861985</a> · <a href="tel:+201002809232" style="color:var(--navy);font-weight:700">01002809232</a> (اتصال أو واتساب)</p>
@@ -267,6 +315,7 @@
   </section>
 
   <script src="nav.js"></script>
+  <script src="motion.js"></script>
   <script src="assistant.js"></script>
   <div class="site-footer">منصة مهنة · <a href="https://t.me/mehnah_eg" target="_blank" rel="noopener">تيليجرام</a> · <a href="https://whatsapp.com/channel/0029Vb9LsoQCMY0McPEvXA2o" target="_blank" rel="noopener">قناة واتساب</a> · <a href="https://www.facebook.com/share/1JNqb6iD5D/" target="_blank" rel="noopener">فيسبوك</a> · <a href="https://wa.me/201092861985?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D9%84%D8%AF%D9%8A%20%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D9%85%D9%86%D8%B5%D8%A9%20%D9%85%D9%87%D9%86%D8%A9." target="_blank" rel="noopener">تواصل معنا</a></div>
 </div>
