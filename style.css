@@ -320,7 +320,7 @@ html { scroll-behavior: smooth; }
 
 /* ===== Typography & polish pass (Aref Ruqaa display + Cairo 900) ===== */
 :root { --gold-light: #ecd096; }
-.brand-home { font-family: 'Aref Ruqaa', serif; font-size: 44px; line-height: 1.5;
+.brand-home { font-family: 'Cairo', sans-serif; font-size: 44px; line-height: 1.5;
   background: linear-gradient(135deg, var(--gold-light), var(--gold) 55%, var(--gold2));
   -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 .brand { background:
@@ -358,3 +358,16 @@ html { scroll-behavior: smooth; }
 }
 .brand-home { display: inline-block; line-height: 1.9; padding-top: 4px; }
 .brand { padding-top: 16px; }
+
+/* ===== Lively list items: staggered scroll-reveal + tactile feedback ===== */
+.test-item { transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease, opacity .55s ease; }
+.test-item.rv { opacity: 0; transform: translateY(18px); }
+.test-item.rv.rv-in { opacity: 1; transform: none; }
+.test-item:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(11,29,56,.13); border-color: var(--gold); }
+.test-item:active { transform: translateY(-1px) scale(.985); box-shadow: 0 4px 12px rgba(11,29,56,.10); }
+.test-item .go { display: inline-block; transition: transform .25s ease, color .25s ease; }
+.test-item:hover .go { transform: translateX(-5px); color: var(--gold2); }
+@media (prefers-reduced-motion: reduce) {
+  .test-item, .test-item .go { transition: none; }
+  .test-item.rv { opacity: 1; transform: none; }
+}
