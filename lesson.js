@@ -49,9 +49,12 @@
     // Member access code (soft gate): a paying member gets a code on WhatsApp;
     // opening any lesson link with ?code=XXXX or entering the code once unlocks
     // all paid lessons on this device (saved in localStorage).
+    // Owner master code: unlocks every lesson on this device. Private to the site owner.
+    var OWNER_CODE = 'MH-OWNER-84K2';
     function codeOk(c) {
       if (!c) return false;
       var u = String(c).trim().toUpperCase();
+      if (u === OWNER_CODE) return true;
       return (T.codes || []).some(function (x) { return String(x).toUpperCase() === u; });
     }
     var savedCode = null;
