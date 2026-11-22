@@ -46,6 +46,23 @@
 
     var isPaid = T.access === 'paid';
 
+    // Member access code (soft gate): a paying member gets a code on WhatsApp;
+    // opening any lesson link with ?code=XXXX or entering the code once unlocks
+    // all paid lessons on this device (saved in localStorage).
+    function codeOk(c) {
+      if (!c) return false;
+      var u = String(c).trim().toUpperCase();
+      return (T.codes || []).some(function (x) { return String(x).toUpperCase() === u; });
+    }
+    var savedCode = null;
+    try { savedCode = localStorage.getItem('mihna:code'); } catch (e) {}
+    var urlCode = params.get('code');
+    if (codeOk(urlCode)) {
+      try { localStorage.setItem('mihna:code', String(urlCode).trim()); } catch (e) {}
+      savedCode = urlCode;
+    }
+    var unlocked = codeOk(savedCode);
+
     // Goals
     var goals = el('section', 'card');
     goals.innerHTML = '<h2 class="sec-title">🎯 ماذا ستتقن بعد هذا الدرس؟</h2>';
@@ -54,7 +71,7 @@
     goals.appendChild(gul);
     app.appendChild(goals);
 
-    if (isPaid) {
+    if (isPaid && !unlocked) {
       var lock = el('section', 'card');
       lock.innerHTML = '<h2 class="sec-title">🔒 محتوى الدرس كاملاً ضمن باقة التدريب</h2>' +
         '<p class="hint">هذا الدرس جزء من برنامج التدريب على الصياغة المدفوع: شرح مبسط + نموذج معتمد + تمرين كتابة ترسله ويُقيَّم لك. الباقة كاملة بسعر تأسيسي <b>٣٠٠ جنيه</b> (الدفع عبر InstaPay أو فودافون كاش).</p>';
@@ -67,6 +84,34 @@
       back.href = 'index.html';
       row.appendChild(back);
       lock.appendChild(row);
+
+      // Member code entry
+      var codeBox = el('div', 'card');
+      codeBox.style.marginTop = '10px';
+      codeBox.innerHTML = '<div style="font-weight:800;color:var(--navy);margin-bottom:6px;">🎟️ مشترك بالفعل؟ أدخل كود التفعيل</div>';
+      var form = el('div');
+      form.style.display = 'flex';
+      form.style.gap = '8px';
+      var inp = document.createElement('input');
+      inp.type = 'text'; inp.className = 'draft'; inp.placeholder = 'اكتب الكود هنا (مثال: MIHNA300)';
+      inp.style.marginBottom = '0'; inp.dir = 'ltr';
+      var btn = el('button', 'btn btn-primary', 'تفعيل');
+      btn.type = 'button'; btn.style.padding = '10px 18px';
+      var err = el('div', 'error-banner');
+      err.id = 'codeErr';
+      form.appendChild(inp); form.appendChild(btn);
+      codeBox.appendChild(form); codeBox.appendChild(err);
+      btn.addEventListener('click', function () {
+        if (codeOk(inp.value)) {
+          try { localStorage.setItem('mihna:code', inp.value.trim()); } catch (e) {}
+          render();
+        } else {
+          err.style.display = 'block';
+          err.textContent = 'الكود غير صحيح. تأكد من كتابته كما وصلك في رسالة الاشتراك، أو تواصل معنا واتساب.';
+        }
+      });
+      inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') btn.click(); });
+      lock.appendChild(codeBox);
       app.appendChild(lock);
       addFooter(app);
       return;
