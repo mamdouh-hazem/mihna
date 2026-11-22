@@ -358,7 +358,8 @@
       '</div></div>' +
       '<div class="card"><h3 class="sec-title">📝 مراجعة الجزء النظري</h3>' + theoryHTML + '</div>' +
       '<div class="card"><h3 class="sec-title">✍️ مراجعة التطبيق العملي</h3>' + practicalHTML + '</div>' +
-      '<div class="card signoff">🎓 أحسنت! أتممت اختبار جريمة النصب على منصة مهنة. تذكر: قوة الدفع الجنائي ليست في حفظ اسمه، بل في استخراجه من واقع الأوراق وربطه بدليله المحدد.</div>';
+      '<div class="card signoff">🎓 أحسنت! أتممت اختبار جريمة النصب على منصة مهنة. تذكر: قوة الدفع الجنائي ليست في حفظ اسمه، بل في استخراجه من واقع الأوراق وربطه بدليله المحدد.' +
+      '<div class="follow-row">📣 تابع مهنة: <a href="https://t.me/mehnah_eg" target="_blank" rel="noopener">قناة تيليجرام</a> · <a href="https://whatsapp.com/channel/0029Vb9LsoQCMY0McPEvXA2o" target="_blank" rel="noopener">قناة واتساب</a> · <a href="https://www.facebook.com/share/1JNqb6iD5D/" target="_blank" rel="noopener">صفحة فيسبوك</a><br>🎓 برنامج التدريب على الصياغة — يعادل خبرة سنتين في كبرى المكاتب — ٣٠٠ جنيه (سعر تأسيسي لأول دفعة): <a href="https://wa.me/201092861985?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B4%D8%AA%D8%B1%D8%A7%D9%83%20%D9%81%D9%8A%20%D8%A8%D8%B1%D9%86%D8%A7%D9%85%D8%AC%20%D8%A7%D9%84%D8%AA%D8%AF%D8%B1%D9%8A%D8%A8%20%D8%B9%D9%84%D9%89%20%D8%A7%D9%84%D8%B5%D9%8A%D8%A7%D8%BA%D8%A9%20%D9%85%D9%86%20%D9%85%D9%86%D8%B5%D8%A9%20%D9%85%D9%87%D9%86%D8%A9%20%D8%A8%D8%A7%D9%84%D8%B3%D8%B9%D8%B1%20%D8%A7%D9%84%D8%AA%D8%A3%D8%B3%D9%8A%D8%B3%D9%8A%20%D9%A3%D9%A0%D9%A0%20%D8%AC%D9%86%D9%8A%D9%87." target="_blank" rel="noopener">اطلب الاشتراك عبر واتساب</a></div></div>';
     res.style.display = 'block';
     var sb = document.getElementById('submitBtn');
     if (sb) sb.style.display = 'none';
