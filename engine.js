@@ -7,7 +7,7 @@
 
   var params = new URLSearchParams(location.search);
   var testId = params.get('test') || 'nasb-01';
-  var storeKey = 'mihna:test:' + testId;
+  var storeKey = 'mihna:test:v2:' + testId;
   var T = null; // test data
   var S = { mode: null, theory: {}, cases: {}, done: false }; // state
 
@@ -22,7 +22,7 @@
     return S.cases[i];
   }
 
-  fetch(encodeURIComponent(testId) + '.json')
+  fetch(encodeURIComponent(testId) + '.json?v=explanations-2')
     .then(function (r) { if (!r.ok) throw new Error('not found'); return r.json(); })
     .then(function (d) { T = d; load(); render(); })
     .catch(function () {
@@ -185,6 +185,7 @@
           } else {
             cur.sel = cur.sel.filter(function (x) { return x !== op.id; });
           }
+          cc.querySelector('.inline-feedback').innerHTML = '';
           save(); updateProgress();
         });
         lab.appendChild(cb);
@@ -198,7 +199,7 @@
       ta.rows = 6;
       ta.placeholder = 'اكتب صياغتك هنا… مثال البداية: يتمسك الدفاع بـ…';
       ta.value = cs.draft;
-      ta.addEventListener('input', function () { caseState(ci).draft = ta.value; save(); updateProgress(); });
+      ta.addEventListener('input', function () { caseState(ci).draft = ta.value; cc.querySelector('.inline-feedback').innerHTML = ''; save(); updateProgress(); });
       cc.appendChild(ta);
       cc.appendChild(el('div', 'inline-feedback'));
       if (S.mode === 'learn') {
@@ -243,10 +244,24 @@
       if (oi === q.correct) o.classList.add('ok');
       else if (oi === picked) o.classList.add('bad');
     });
-    f.innerHTML = '<div class="fb-card ' + (ok ? 'fb-ok' : 'fb-bad') + '">' +
-      '<b>' + (ok ? '✅ إجابة صحيحة' : '❌ إجابة غير صحيحة') + '</b>' +
-      (ok ? '' : '<div class="error-tag">الخطأ الذي وقع هنا: ' + esc(q.trap) + '</div>') +
-      '<div class="fix-box">💡 <b>التوضيح القانوني:</b> ' + esc(q.exp) + '</div></div>';
+    f.setAttribute('aria-live', 'polite');
+    f.innerHTML = theoryFeedbackHTML(qi);
+  }
+
+  function theoryFeedbackHTML(qi) {
+    var q = T.theory[qi], picked = S.theory[qi], ok = picked === q.correct;
+    var wrongReason = q.option_explanations && q.option_explanations[picked];
+    var h = '<div class="fb-card ' + (ok ? 'fb-ok' : 'fb-bad') + '">' + (q.guidance ? '<p class="hint">توجيه مهني للتمرين، وليس قاعدة قانونية ملزمة.</p>' : '') +
+      '<div class="fb-head">' + (ok ? 'إجابة صحيحة' : 'إجابة غير صحيحة') + '</div>' +
+      '<div><b>إجابتك:</b> ' + esc(q.options[picked]) + '</div>';
+    if (!ok) h += '<div class="error-tag"><b>ليه الإجابة دي خطأ؟</b> ' + esc(wrongReason || q.trap) + '</div>';
+    h += '<div class="fix-box"><b>الإجابة الصحيحة:</b> ' + esc(q.options[q.correct]) + '</div>' +
+      '<div class="fix-box"><b>' + (ok ? 'ليه إجابتك صح؟' : 'ليه دي الإجابة الصح؟') + '</b> ' + esc(q.exp) + '</div>';
+    if (q.sources && q.sources.length) {
+      h += '<div class="hint"><b>المصدر:</b> ' + q.sources.filter(function(x){return x && /^https:\/\//.test(x.url);}).map(function(x){return '<a href="' + esc(x.url).replace(/"/g,'&quot;') + '" target="_blank" rel="noopener">' + esc(x.title || 'النص المرجعي') + '</a>';}).join(' · ') + '</div>';
+    }
+    h += '</div>';
+    return h;
   }
 
   function gradeCase(ci) {
@@ -278,14 +293,19 @@
     var c = T.cases[ci];
     var cls = g.total === 5 ? 'fb-ok' : (g.total >= 3 ? 'fb-warn' : 'fb-bad');
     var icon = g.total === 5 ? '✅' : (g.total >= 3 ? '⚠️' : '❌');
-    var h = '<div class="fb-card ' + cls + '">' +
+    var h = '<div class="fb-card ' + cls + '">' + (c.practice_note ? '<p class="hint">' + esc(c.practice_note) + '</p>' : '') +
       '<div class="fb-head">' + icon + ' ' + esc(c.title.split('—')[0].trim()) + ' (' + toAr(g.total) + ' من ٥ — الاختيار: ' + toAr(g.choice) + '/٢ · الصياغة: ' + toAr(g.draftScore) + '/٣)</div>' +
       (g.draft ? '<div class="your-draft"><b>صياغتك المكتوبة:</b> ' + esc(g.draft) + '</div>' : '');
-    if (g.choice < 2) h += '<div class="error-tag">❌ خطأ في اختيار الدفوع: أصبت ' + toAr(g.choice) + ' من ٢ — راجع الصياغة النموذجية أدناه لتعرف الدفعين المنضبطين وتتجنب الخيارات المضللة.</div>';
+    var cs = caseState(ci);
+    var incorrect = c.options.filter(function(o){return cs.sel.indexOf(o.id) !== -1 && c.expected.indexOf(o.id) === -1;});
+    var correct = c.options.filter(function(o){return c.expected.indexOf(o.id) !== -1;});
+    if (incorrect.length) h += '<div class="error-tag"><b>الاختيارات غير الصحيحة:</b><ul>' + incorrect.map(function(o){return '<li>' + esc(o.text) + '</li>';}).join('') + '</ul></div>';
+    h += '<div class="fix-box"><b>الدفعان الصحيحان وفق نموذج الواقعة:</b><ul>' + correct.map(function(o){return '<li>' + esc(o.text) + '</li>';}).join('') + '</ul><b>التعليل وربطه بأوراق الواقعة موضحان في نموذج الصياغة أدناه.</b></div>';
+
     g.errors.forEach(function (e) {
       h += '<div class="error-tag">❌ ' + esc(e.err) + '</div><div class="fix-box">🛠️ <b>التعديل المطلوب:</b> ' + esc(e.fix) + '</div>';
     });
-    h += '<div class="model-box"><b>📜 الصياغة النموذجية المعتمدة:</b><br>' + esc(c.model) + '</div></div>';
+    h += '<p class="hint">تقييم الصياغة آلي ومبدئي، ولا يغني عن مراجعة قانونية بشرية.</p><div class="model-box"><b>📜 التعليل ونموذج الصياغة:</b><br>' + esc(c.model) + '</div></div>';
     return h;
   }
 
@@ -323,10 +343,7 @@
     T.theory.forEach(function (q, qi) {
       var ok = S.theory[qi] === q.correct;
       if (ok) theoryScore++;
-      theoryHTML += '<div class="fb-card ' + (ok ? 'fb-ok' : 'fb-bad') + '">' +
-        '<div class="fb-head">' + (ok ? '✅' : '❌') + ' السؤال ' + toAr(qi + 1) + '</div>' +
-        (ok ? '' : '<div class="error-tag">الخطأ الذي وقع هنا: ' + esc(q.trap) + '</div>') +
-        '<div class="fix-box">💡 <b>التصحيح والتوضيح القانوني:</b> ' + esc(q.exp) + '</div></div>';
+      theoryHTML += '<div class="q-title">السؤال ' + toAr(qi + 1) + ': ' + esc(q.q) + '</div>' + theoryFeedbackHTML(qi);
     });
 
     var practicalScore = 0, practicalHTML = '';
