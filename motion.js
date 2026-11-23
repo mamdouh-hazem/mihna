@@ -137,8 +137,8 @@
   var tryOpts = document.getElementById('try-opts');
   if (tryOpts) {
     var CORRECT = 1;
-    var EXP_OK = 'إجابة صحيحة 👏 النصب جريمة ذات أركان مادية: تدليس بإحدى الطرق القانونية مؤيد بمظاهر خارجية، واستيلاء على مال، ورابطة سببية. القول المرسل دون مظهر خارجي لا يكفي، ولم يقع أي استيلاء أصلاً.';
-    var EXP_BAD = 'إجابة غير صحيحة. الفخ الشائع هنا الخلط بين الكذب العادي المرسل وبين التدليس القانوني المنصوص عليه في المادة ٣٣٦، أو اعتبار النية وحدها جريمة. الصواب: لا تقوم الجريمة — لا تدليس بمظهر خارجي ولا استيلاء على مال.';
+    var EXP_OK = 'الوعد الكاذب المجرد في هذه الواقعة لا يكفي لإثبات الطرق الاحتيالية، ولم يقع استيلاء. لا تعمم ذلك على اتخاذ اسم كاذب أو صفة غير صحيحة، فهما طريقان مستقلان.';
+    var WRONG = ['اختيارك يفترض النصب التام رغم عدم تسليم أي مال، كما أن الوعد المجرد هنا غير مؤيد بوسيلة احتيال.', '', 'النية وحدها لا تكفي للشروع؛ يلزم بدء التنفيذ وفق المادة ٤٥، وليس مجرد وعد كاذب في الفرض المعروض.'];
     tryOpts.addEventListener('click', function (ev) {
       var btn = ev.target.closest('.try-opt');
       if (!btn || tryOpts.classList.contains('done')) return;
@@ -152,8 +152,13 @@
       });
       var fb = document.getElementById('try-fb');
       fb.hidden = false;
+      fb.setAttribute('aria-live', 'polite');
       fb.innerHTML = '<div class="fb-card ' + (ok ? 'fb-ok' : 'fb-bad') + '"><div class="fb-head">' +
-        (ok ? '✅ صح!' : '❌ لأ، ركز في الفخ') + '</div>' + (ok ? EXP_OK : EXP_BAD) + '</div>';
+        (ok ? 'إجابة صحيحة' : 'إجابة غير صحيحة') + '</div>' +
+        (ok ? '' : '<div class="error-tag"><b>ليه إجابتك خطأ؟</b> ' + WRONG[i] + '</div>') +
+        '<div class="fix-box"><b>الإجابة الصحيحة:</b> لا تقوم الجريمة على الفروض المعروضة.</div>' +
+        '<div class="fix-box"><b>ليه دي الإجابة الصح؟</b> ' + EXP_OK + '</div>' +
+        '<p class="hint">المصدر: <a href="https://fahmqanon.com/laws/58-1937/336" target="_blank" rel="noopener">المادة ٣٣٦ عقوبات</a> · <a href="https://fahmqanon.com/laws/58-1937/45" target="_blank" rel="noopener">المادة ٤٥ عقوبات</a></p></div>';
       document.getElementById('try-more').hidden = false;
     });
   }
