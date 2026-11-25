@@ -181,9 +181,25 @@ a { color: var(--navy2); }
 #mihna-assistant { position: fixed; left: 14px; bottom: 14px; z-index: 50; font-family: inherit; }
 #ma-fab {
   width: 56px; height: 56px; border-radius: 50%; border: 2px solid var(--gold);
-  background: linear-gradient(135deg, var(--navy), var(--navy2)); font-size: 26px;
+  background: linear-gradient(135deg, var(--navy), var(--navy2));
   cursor: pointer; box-shadow: 0 3px 10px rgba(11,29,56,.35);
+  display: flex; align-items: center; justify-content: center; padding: 0;
 }
+#ma-fab-logo { width: 34px; height: auto; display: block; }
+#ma-hint {
+  position: absolute; left: 0; bottom: 66px; width: 210px;
+  background: #fff; border: 1.5px solid var(--gold); border-radius: 12px 12px 12px 4px;
+  color: var(--navy); font-size: 13px; font-weight: 700; line-height: 1.8;
+  padding: 9px 30px 9px 12px; box-shadow: 0 4px 14px rgba(11,29,56,.18);
+  opacity: 0; transform: translateY(6px); pointer-events: none;
+  transition: opacity .35s ease, transform .35s ease;
+}
+#ma-hint.show { opacity: 1; transform: none; pointer-events: auto; }
+#ma-hint-close {
+  position: absolute; top: 4px; left: 6px; background: none; border: none;
+  color: var(--muted); font-size: 11px; cursor: pointer; padding: 2px 4px; line-height: 1;
+}
+@media (prefers-reduced-motion: reduce) { #ma-hint { transition: none; } }
 #ma-panel {
   position: absolute; left: 0; bottom: 66px; width: 320px; max-width: calc(100vw - 28px);
   background: #fff; border: 1.5px solid var(--gold); border-radius: 14px; overflow: hidden;
