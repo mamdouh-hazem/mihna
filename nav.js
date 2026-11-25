@@ -8,7 +8,6 @@
       '<a href="index.html">الرئيسية</a>' +
       '<a href="index.html#tests">الاختبارات</a>' +
       '<a href="index.html#training">التدريب المهني</a>' +
-      '<a href="laws.html">مكتبة القوانين</a>' +
       '<a href="guides.html">دليل المحامي المبتدئ</a>' +
       '<a href="pro.html">دليل المحامي المحترف</a>' +
       '<a href="index.html#follow">تابعنا</a>' +
