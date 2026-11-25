@@ -57,6 +57,8 @@
   /* ---- Animated counters (once, when visible) ---- */
   var counters = document.querySelectorAll('.count[data-count]');
   function runCounter(el) {
+    if (el.dataset.done) return;
+    el.dataset.done = '1';
     var target = parseInt(el.getAttribute('data-count'), 10) || 0;
     var suffix = el.getAttribute('data-suffix') || '';
     if (reduced) { el.textContent = toAr(target) + suffix; return; }
@@ -73,7 +75,7 @@
   }
 
   /* ---- Scroll reveal + counter trigger + nav active section ---- */
-  var sections = document.querySelectorAll('#app > section, #app > .stats-band');
+  var sections = document.querySelectorAll('#app > section, #app > .stats-band, #app main > section, #app .guide-intro, .guide-card, .law-card, .law-soon');
   if ('IntersectionObserver' in window && !reduced) {
     sections.forEach(function (s) { s.classList.add('reveal'); });
     var io = new IntersectionObserver(function (entries) {
@@ -85,6 +87,14 @@
       });
     }, { threshold: 0.12 });
     sections.forEach(function (s) { io.observe(s); });
+    if (counters.length) {
+      var cio = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { runCounter(en.target); cio.unobserve(en.target); }
+        });
+      }, { threshold: 0.4 });
+      counters.forEach(function (c) { cio.observe(c); });
+    }
   } else {
     counters.forEach(function (el) {
       el.textContent = toAr(parseInt(el.getAttribute('data-count'), 10) || 0) + (el.getAttribute('data-suffix') || '');
