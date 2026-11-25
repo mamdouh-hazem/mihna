@@ -274,11 +274,11 @@ html { scroll-behavior: smooth; }
 
 /* Buttons & cards micro-interactions */
 .btn { transition: transform .18s ease, box-shadow .18s ease, filter .18s ease; }
-.btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(11,29,56,.22); filter: brightness(1.05); }
+.btn:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(217,176,97,.38), 0 4px 12px rgba(11,29,56,.18); filter: brightness(1.05); }
 .btn:active { transform: translateY(0) scale(.98); }
 .test-item { transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease; }
 .test-item:hover { transform: translateY(-4px); border-color: var(--gold);
-  box-shadow: 0 10px 24px rgba(11,29,56,.14); }
+  box-shadow: 0 10px 24px rgba(217,176,97,.3), 0 6px 14px rgba(11,29,56,.12); }
 .test-item:hover .go { color: var(--navy); }
 .test-item .go { transition: color .2s ease, transform .2s ease; display: inline-block; }
 .test-item:hover .go { transform: translateX(-5px); }
@@ -404,4 +404,18 @@ html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) {
   .test-item, .test-item .go { transition: none; }
   .test-item.rv { opacity: 1; transform: none; }
+}
+
+/* ===== Site-wide life: page fade-in + card hover lift with soft gold shadow ===== */
+@keyframes page-in { from { opacity: 0; } to { opacity: 1; } }
+body { animation: page-in .35s ease; }
+.card, .faq-item, .guide-card, .law-card { transition: transform .25s ease, box-shadow .25s ease; }
+.card:hover, .faq-item:hover, .guide-card:hover, .law-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 26px rgba(217,176,97,.32), 0 5px 14px rgba(11,29,56,.12);
+}
+@media (prefers-reduced-motion: reduce) {
+  body { animation: none; }
+  .card, .faq-item, .guide-card, .law-card { transition: none; }
+  .card:hover, .faq-item:hover, .guide-card:hover, .law-card:hover { transform: none; box-shadow: none; }
 }
