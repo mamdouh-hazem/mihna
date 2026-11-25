@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مكتبة القوانين | مهنة</title>
+<meta name="description" content="مكتبة القوانين على منصة مهنة: نصوص القوانين المصرية من مصادرها الرسمية للقراءة والتحميل.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@400;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230B1D38'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='%23D9B061' font-family='sans-serif' font-weight='bold'>م</text></svg>">
+<style>
+.law-tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:6px 0 18px}
+#law-search{flex:1;min-width:200px;border:1.5px solid #d8d2c0;border-radius:12px;padding:11px 14px;font-family:inherit;font-size:15px}
+#law-search:focus{outline:none;border-color:var(--gold)}
+#branch-chips{display:flex;gap:8px;flex-wrap:wrap}
+.law-chip{border:1.5px solid #e3ddcd;background:#fff;color:var(--navy);border-radius:20px;padding:7px 16px;font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;transition:color .2s,border-color .2s}
+.law-chip:hover{border-color:var(--gold)}
+.law-chip.active{background:var(--navy);color:var(--gold);border-color:var(--navy)}
+.law-desc{font-size:14.5px;color:#3d4a5e;line-height:1.9;margin:0 0 10px}
+.law-src{font-size:12.5px;color:var(--muted);line-height:1.8;margin:0 0 16px;flex:1}
+.law-card{min-height:100%}
+.law-soon{background:#faf8f2;border:1.5px dashed #d8d2c0;border-radius:15px;padding:20px 22px;margin-top:26px}
+.law-soon h3{font-size:16px;color:var(--navy);margin:0 0 8px}
+.law-soon p{font-size:13.5px;color:var(--muted);line-height:2;margin:0}
+@media(max-width:600px){#law-search{font-size:14px}}
+</style>
+</head>
+<body>
+<div id="app">
+<header class="brand">
+<span class="brand-home">مهنة</span>
+<div class="brand-slogan">من المعرفة القانونية إلى الحياة المهنية</div>
+</header>
+<main>
+<section class="guide-intro">
+<div class="chip">مكتبة مهنة</div>
+<h1>مكتبة القوانين</h1>
+<p>نصوص القوانين المصرية من مصادرها الرسمية</p>
+<p>اقرأ القانون على المنصة أو حمّله بصيغة PDF، مع بيان رقم القانون ومصدره الرسمي وحالته. تُضاف القوانين تباعاً.</p>
+</section>
+<section aria-labelledby="laws-title">
+<h2 class="sec-title" id="laws-title">القوانين المتاحة</h2>
+<div class="law-tools">
+<input id="law-search" type="search" placeholder="ابحث باسم القانون أو رقمه" aria-label="بحث في مكتبة القوانين">
+<div id="branch-chips"></div>
+</div>
+<div class="guide-grid" id="laws-grid" data-branch="الكل"></div>
+<div class="law-soon">
+<h3>قريباً في المكتبة</h3>
+<p>دستور جمهورية مصر العربية · قانون العقوبات · قانون الإجراءات الجنائية · القانون المدني · قانون المرافعات المدنية والتجارية · قانون الأحوال الشخصية · القانون التجاري — تُنشر تباعاً بعد التحقق من نصوصها الرسمية المحدثة.</p>
+</div>
+<p class="guide-credit">النصوص منقولة عن مصادر رسمية، والنسخة الحاكمة دائماً هي المنشورة في الجريدة الرسمية.</p>
+</section>
+</main>
+</div>
+<script src="nav.js?v=nav2"></script>
+<script src="law.js?v=1"></script>
+</body>
+</html>
