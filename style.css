@@ -473,12 +473,14 @@ body { animation: page-in .35s ease; }
 
 /* ===== Icon-card section menu: auto-scrolling icon cards (Mehna identity) ===== */
 .icon-menu {
+  direction: ltr; /* keep the marquee track left-anchored inside the RTL page */
   overflow: hidden; margin: 14px 0; padding: 12px 0 14px;
   background: linear-gradient(135deg, var(--navy), var(--navy2));
   border: 1px solid rgba(217,176,97,.45); border-radius: 16px;
   box-shadow: 0 8px 20px rgba(11,29,56,.14);
 }
 .icon-menu-title {
+  direction: rtl;
   margin: 0 0 10px; text-align: center;
   color: var(--gold); font-weight: 800; font-size: 15px;
 }
