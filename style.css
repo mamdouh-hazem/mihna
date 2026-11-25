@@ -152,13 +152,31 @@ a { color: var(--navy2); }
 .md-line { font-size: 14.5px; color: #333c4d; }
 .md-gap { height: 8px; }
 /* Site navigation */
-.site-nav { display: flex; gap: 8px; overflow-x: auto; padding: 2px 2px 12px; margin-top: -6px; -webkit-overflow-scrolling: touch; }
-.site-nav a {
-  flex: 0 0 auto; text-decoration: none; font-size: 13.5px; font-weight: 700;
-  color: var(--navy); background: #fff; border: 1.5px solid #e3ddcd; border-radius: 20px;
-  padding: 6px 14px; white-space: nowrap;
+.site-nav {
+  display: flex; gap: 4px; overflow-x: auto; padding: 0 10px;
+  background: linear-gradient(135deg, var(--navy), var(--navy2));
+  border-bottom: 2px solid var(--gold);
+  scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  animation: nav-in .45s ease both;
 }
-.site-nav a:hover, .site-nav a:active { border-color: var(--gold); color: var(--gold2); }
+.site-nav::-webkit-scrollbar { display: none; }
+@keyframes nav-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+.site-nav a {
+  position: relative; flex: 0 0 auto; text-decoration: none; font-size: 13.5px; font-weight: 700;
+  color: #dfe6f0; padding: 12px 13px 13px; white-space: nowrap;
+  transition: color .25s ease;
+}
+.site-nav a::after {
+  content: ""; position: absolute; right: 12px; left: 12px; bottom: 5px;
+  height: 2px; border-radius: 2px; background: var(--gold);
+  transform: scaleX(0); transition: transform .28s ease;
+}
+.site-nav a:hover, .site-nav a:active { color: var(--gold); }
+.site-nav a:hover::after, .site-nav a:active::after { transform: scaleX(1); }
+@media (prefers-reduced-motion: reduce) {
+  .site-nav { animation: none; }
+  .site-nav a, .site-nav a::after { transition: none; }
+}
 /* Assistant widget */
 #mihna-assistant { position: fixed; left: 14px; bottom: 14px; z-index: 50; font-family: inherit; }
 #ma-fab {
@@ -197,10 +215,10 @@ html { scroll-behavior: smooth; }
   border-radius: 0 0 0 3px; transition: width .1s linear; }
 
 /* Sticky nav gets a floating shadow once scrolled */
-.site-nav { position: sticky; top: 0; z-index: 40; background: var(--bg); padding-top: 8px; }
-.site-nav.nav-stuck { box-shadow: 0 6px 14px -6px rgba(11,29,56,.25); border-radius: 0 0 12px 12px; }
-.site-nav a { transition: all .2s ease; }
-.site-nav a.nav-active { background: var(--navy); color: var(--gold); border-color: var(--navy); }
+.site-nav { position: sticky; top: 0; z-index: 40; }
+.site-nav.nav-stuck { box-shadow: 0 8px 16px -8px rgba(11,29,56,.4); }
+.site-nav a.nav-active { color: var(--gold); }
+.site-nav a.nav-active::after { transform: scaleX(1); }
 
 /* Scroll reveal */
 .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s ease; }
