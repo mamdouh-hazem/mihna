@@ -11,6 +11,19 @@
 <link rel="stylesheet" href="style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230B1D38'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='%23D9B061' font-family='sans-serif' font-weight='bold'>م</text></svg>">
 <style>
+.guide-intro{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:32px;border-radius:18px;margin:20px 0}
+.guide-intro h1{font-family:'Aref Ruqaa',serif;font-size:36px;margin:6px 0}
+.guide-intro p{color:#e6eaf0;margin:10px 0}
+.guide-intro .chip{color:var(--gold)}
+.guide-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.guide-card{background:#fff;border:1px solid #dedbcf;border-top:3px solid var(--gold);border-radius:15px;padding:22px;display:flex;flex-direction:column}
+.guide-num{font-size:13px;color:var(--muted)}
+.guide-card h3{font-size:20px;line-height:1.7;margin:12px 0 8px}
+.guide-actions{display:flex;gap:8px;flex-wrap:wrap}
+.guide-actions .btn{font-size:13px;padding:9px 12px}
+.guide-note{font-size:14px;color:var(--muted)}
+.guide-credit{text-align:center;color:var(--muted);font-size:14px;margin:28px 0}
+@media(max-width:600px){.guide-grid{grid-template-columns:1fr}.guide-intro{padding:24px}.guide-intro h1{font-size:30px}.guide-card{padding:18px}}
 #read-area{margin-top:14px}
 #read-area iframe{width:100%;height:78vh;min-height:480px;border:1px solid #dedbcf;border-radius:12px;background:#fff}
 .reader-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
