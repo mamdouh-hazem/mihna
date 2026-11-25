@@ -20,8 +20,18 @@ var LAWS = [
     desc: 'القانون المنظم لمهنة المحاماة: القيد في الجداول، حقوق المحامي وواجباته، التأديب، ونقابة المحامين. النص الأساسي لكل طالب ومحامٍ جديد.',
     pdf: '1eVvP00Qa0-SUChE7Agr3xaBaXPHBxGwA'
   }
+  ,{
+    id: 'icra-174-2025',
+    title: 'قانون الإجراءات الجنائية',
+    number: 'قانون رقم 174 لسنة 2025',
+    branch: 'جنائي',
+    status: 'يُعمل به اعتباراً من 1 أكتوبر 2026 ويُلغي قانون الإجراءات الجنائية رقم 150 لسنة 1950',
+    source: 'الجريدة الرسمية، العدد 54 مكرر (د)، 12 نوفمبر 2025 — منشور على بوابة وزارة العدل',
+    desc: 'قانون الإجراءات الجنائية الجديد كاملاً كما نُشر في الجريدة الرسمية: الدعوى الجنائية، التحقيق الابتدائي، المحاكمة، طرق الطعن، والأحكام الخاصة بتسليم المتهمين.',
+    pdf: '1pQhav0zWqOBYFcFEHz-9ETG-nfL4qlQT'
+  }
 ];
-var LAW_BRANCHES = ['الكل', 'عمل', 'المهنة'];
+var LAW_BRANCHES = ['الكل', 'عمل', 'جنائي', 'المهنة'];
 function lawPreview(id) { return 'https://drive.google.com/file/d/' + id + '/preview'; }
 function lawDownload(id) { return 'https://drive.usercontent.google.com/uc?id=' + id + '&export=download'; }
 function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
