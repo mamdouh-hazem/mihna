@@ -78,15 +78,28 @@
   var sections = document.querySelectorAll('#app > section, #app > .stats-band, #app main > section, #app .guide-intro, .guide-card, .law-card, .law-soon');
   if ('IntersectionObserver' in window && !reduced) {
     sections.forEach(function (s) { s.classList.add('reveal'); });
+    function revealTarget(t, observer) {
+      t.classList.add('reveal-in');
+      if (t.id === 'stats') counters.forEach(runCounter);
+      observer.unobserve(t);
+    }
+    /* A block taller than the screen (e.g. the full guides grid) can never be
+       12% visible on a phone, so one shared threshold would keep it hidden
+       forever. Tall blocks get a minimal threshold instead. */
+    var vh = window.innerHeight || 800;
+    var ioTall = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) revealTarget(en.target, ioTall);
+      });
+    }, { threshold: 0.01 });
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
-        if (!en.isIntersecting) return;
-        en.target.classList.add('reveal-in');
-        if (en.target.id === 'stats') counters.forEach(runCounter);
-        io.unobserve(en.target);
+        if (en.isIntersecting) revealTarget(en.target, io);
       });
     }, { threshold: 0.12 });
-    sections.forEach(function (s) { io.observe(s); });
+    sections.forEach(function (s) {
+      (s.offsetHeight > vh * 0.9 ? ioTall : io).observe(s);
+    });
     if (counters.length) {
       var cio = new IntersectionObserver(function (entries) {
         entries.forEach(function (en) {
